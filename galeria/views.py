@@ -1,6 +1,11 @@
-from django.shortcuts import render
-
-from django.http import HttpResponse
+from django.shortcuts import render,get_object_or_404
+from galeria.models import fotografia
 
 def index(request):
-    return HttpResponse('<h1>Alura space</h1>')
+    fotografias = fotografia.objects.order_by("-data_fotografia").filter(publicada=True)
+    
+    return render(request,'galeria/index.html',{"cards":fotografias})
+
+def imagem(request,foto_id):
+    Fotografia = get_object_or_404(fotografia,pk=foto_id)
+    return render(request,'galeria/imagem.html',{"Fotografia":Fotografia}) 
